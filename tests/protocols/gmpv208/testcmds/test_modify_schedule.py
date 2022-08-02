@@ -68,9 +68,7 @@ class GmpModifyScheduleTestCase:
         self.gmp.modify_schedule(schedule_id="s1", icalendar=ICAL)
 
         self.connection.send.has_been_called_with(
-            '<modify_schedule schedule_id="s1">'
-            '<icalendar>{}</icalendar>'
-            "</modify_schedule>".format(ICAL)
+            f'<modify_schedule schedule_id="s1"><icalendar>{ICAL}</icalendar></modify_schedule>'
         )
 
     def test_modify_schedule_with_timezone(self):

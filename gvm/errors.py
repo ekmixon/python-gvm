@@ -33,7 +33,7 @@ class GvmError(Exception):
         self.message = message
 
     def __repr__(self):
-        return '<{} message="{}">'.format(self.__class__.__name__, self.message)
+        return f'<{self.__class__.__name__} message="{self.message}">'
 
     def __str__(self):
         return self.message
@@ -62,12 +62,10 @@ class GvmServerError(GvmError):
         self.status = status
 
     def __str__(self):
-        return 'Server Error {}. {}'.format(self.status, self.message)
+        return f'Server Error {self.status}. {self.message}'
 
     def __repr__(self):
-        return '<{} status="{}" message="{}">'.format(
-            self.__class__.__name__, self.status, self.message
-        )
+        return f'<{self.__class__.__name__} status="{self.status}" message="{self.message}">'
 
 
 class GvmResponseError(GvmClientError):
@@ -86,12 +84,10 @@ class GvmResponseError(GvmClientError):
         self.status = status
 
     def __str__(self):
-        return 'Response Error {}. {}'.format(self.status, self.message)
+        return f'Response Error {self.status}. {self.message}'
 
     def __repr__(self):
-        return '<{} status="{}" message="{}">'.format(
-            self.__class__.__name__, self.status, self.message
-        )
+        return f'<{self.__class__.__name__} status="{self.status}" message="{self.message}">'
 
 
 class InvalidArgument(GvmError):
@@ -122,12 +118,13 @@ class InvalidArgument(GvmError):
             return self.message
 
         if not self.function:
-            return "Invalid argument {}".format(self.argument)
+            return f"Invalid argument {self.argument}"
 
-        if not self.argument:
-            return "Invalid argument for {}".format(self.function)
-
-        return "Invalid argument {} for {}".format(self.argument, self.function)
+        return (
+            f"Invalid argument {self.argument} for {self.function}"
+            if self.argument
+            else f"Invalid argument for {self.function}"
+        )
 
 
 class InvalidArgumentType(GvmError):
@@ -155,12 +152,9 @@ class InvalidArgumentType(GvmError):
 
     def __str__(self):
         if self.function:
-            return "In {} the argument {} must be of type {}.".format(
-                self.function, self.argument, self.arg_type
-            )
-        return "The argument {} must be of type {}.".format(
-            self.argument, self.arg_type
-        )
+            return f"In {self.function} the argument {self.argument} must be of type {self.arg_type}."
+
+        return f"The argument {self.argument} must be of type {self.arg_type}."
 
 
 class RequiredArgument(GvmError):
@@ -191,9 +185,10 @@ class RequiredArgument(GvmError):
             return self.message
 
         if not self.function:
-            return "Required argument {}".format(self.argument)
+            return f"Required argument {self.argument}"
 
-        if not self.argument:
-            return "Required argument missing for {}".format(self.function)
-
-        return "{} requires a {} argument".format(self.function, self.argument)
+        return (
+            f"{self.function} requires a {self.argument} argument"
+            if self.argument
+            else f"Required argument missing for {self.function}"
+        )

@@ -170,28 +170,19 @@ def get_scanner_type_from_string(
 
     scanner_type = scanner_type.lower()
 
-    if (
-        scanner_type == ScannerType.OSP_SCANNER_TYPE.value
-        or scanner_type == 'osp'
-    ):
+    if scanner_type in [ScannerType.OSP_SCANNER_TYPE.value, 'osp']:
         return ScannerType.OSP_SCANNER_TYPE
 
-    if (
-        scanner_type == ScannerType.OPENVAS_SCANNER_TYPE.value
-        or scanner_type == 'openvas'
-    ):
+    if scanner_type in [ScannerType.OPENVAS_SCANNER_TYPE.value, 'openvas']:
         return ScannerType.OPENVAS_SCANNER_TYPE
 
-    if (
-        scanner_type == ScannerType.CVE_SCANNER_TYPE.value
-        or scanner_type == 'cve'
-    ):
+    if scanner_type in [ScannerType.CVE_SCANNER_TYPE.value, 'cve']:
         return ScannerType.CVE_SCANNER_TYPE
 
-    if (
-        scanner_type == ScannerType.GREENBONE_SENSOR_SCANNER_TYPE.value
-        or scanner_type == 'greenbone'
-    ):
+    if scanner_type in [
+        ScannerType.GREENBONE_SENSOR_SCANNER_TYPE.value,
+        'greenbone',
+    ]:
         return ScannerType.GREENBONE_SENSOR_SCANNER_TYPE
 
     raise InvalidArgument(

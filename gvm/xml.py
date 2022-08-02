@@ -95,9 +95,7 @@ def pretty_print(xml, file: IOBase = sys.stdout):
 
     """
     if not isinstance(file, IOBase):
-        raise TypeError(
-            'Type needs to be from IOBase, not {}.'.format(type(file))
-        ) from None
+        raise TypeError(f'Type needs to be from IOBase, not {type(file)}.') from None
 
     if isinstance(xml, list):
         for item in xml:

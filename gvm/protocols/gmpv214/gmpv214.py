@@ -126,12 +126,9 @@ class GmpV214Mixin(GvmProtocol):
 
         if threat is not None:
             deprecation(
-                "The threat parameter has been removed in GMP"
-                " version {}{}".format(
-                    self.get_protocol_version()[0],
-                    self.get_protocol_version()[1],
-                )
+                f"The threat parameter has been removed in GMP version {self.get_protocol_version()[0]}{self.get_protocol_version()[1]}"
             )
+
 
         return self._send_xml_command(cmd)
 
@@ -207,21 +204,15 @@ class GmpV214Mixin(GvmProtocol):
 
         if threat is not None:
             deprecation(
-                "The threat parameter has been removed in GMP"
-                " version {}{}".format(
-                    self.get_protocol_version()[0],
-                    self.get_protocol_version()[1],
-                )
+                f"The threat parameter has been removed in GMP version {self.get_protocol_version()[0]}{self.get_protocol_version()[1]}"
             )
+
 
         if new_threat is not None:
             deprecation(
-                "The new_threat parameter has been removed in GMP"
-                " version {}{}".format(
-                    self.get_protocol_version()[0],
-                    self.get_protocol_version()[1],
-                )
+                f"The new_threat parameter has been removed in GMP version {self.get_protocol_version()[0]}{self.get_protocol_version()[1]}"
             )
+
 
         return self._send_xml_command(cmd)
 
@@ -412,12 +403,9 @@ class GmpV214Mixin(GvmProtocol):
 
         if threat is not None:
             deprecation(
-                "The threat parameter has been removed in GMP"
-                " version {}{}".format(
-                    self.get_protocol_version()[0],
-                    self.get_protocol_version()[1],
-                )
+                f"The threat parameter has been removed in GMP version {self.get_protocol_version()[0]}{self.get_protocol_version()[1]}"
             )
+
 
         return self._send_xml_command(cmd)
 
@@ -493,21 +481,15 @@ class GmpV214Mixin(GvmProtocol):
 
         if threat is not None:
             deprecation(
-                "The threat parameter has been removed in GMP"
-                " version {}{}".format(
-                    self.get_protocol_version()[0],
-                    self.get_protocol_version()[1],
-                )
+                f"The threat parameter has been removed in GMP version {self.get_protocol_version()[0]}{self.get_protocol_version()[1]}"
             )
+
 
         if new_threat is not None:
             deprecation(
-                "The new_threat parameter has been removed in GMP"
-                " version {}{}".format(
-                    self.get_protocol_version()[0],
-                    self.get_protocol_version()[1],
-                )
+                f"The new_threat parameter has been removed in GMP version {self.get_protocol_version()[0]}{self.get_protocol_version()[1]}"
             )
+
 
         return self._send_xml_command(cmd)
 
@@ -673,8 +655,7 @@ class GmpV214Mixin(GvmProtocol):
 
         cmd = XmlCommand("modify_user")
 
-        if user_id:
-            cmd.set_attribute("user_id", user_id)
+        cmd.set_attribute("user_id", user_id)
 
         if name:
             cmd.add_element("new_name", name)

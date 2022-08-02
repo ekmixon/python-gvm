@@ -49,10 +49,7 @@ class ThreadedUnixStreamServer(
 class UnixSocketConnectionTestCase(unittest.TestCase):
     # pylint: disable=protected-access
     def setUp(self):
-        self.socketname = "%s/%s.sock" % (
-            tempfile.gettempdir(),
-            str(uuid.uuid4()),
-        )
+        self.socketname = f"{tempfile.gettempdir()}/{str(uuid.uuid4())}.sock"
         self.sockserv = ThreadedUnixStreamServer(
             self.socketname, DummyRequestHandler
         )

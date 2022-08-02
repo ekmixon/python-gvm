@@ -30,11 +30,7 @@ class GmpCreateFilterTestCase:
             )
 
             self.connection.send.has_been_called_with(
-                '<create_filter>'
-                '<name>f1</name>'
-                '<term>sort-reverse=threat first=1 rows=1000</term>'
-                '<type>{}</type>'
-                '</create_filter>'.format(filter_type.value)
+                f'<create_filter><name>f1</name><term>sort-reverse=threat first=1 rows=1000</term><type>{filter_type.value}</type></create_filter>'
             )
 
     def test_create_filter_invalid_filter_type(self):

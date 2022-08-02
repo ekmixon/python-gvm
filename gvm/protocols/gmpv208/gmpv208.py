@@ -66,14 +66,10 @@ def _check_event(
 ):
     if event == AlertEvent.TASK_RUN_STATUS_CHANGED:
         if not condition:
-            raise RequiredArgument(
-                "condition is required for event {}".format(event.name)
-            )
+            raise RequiredArgument(f"condition is required for event {event.name}")
 
         if not method:
-            raise RequiredArgument(
-                "method is required for event {}".format(event.name)
-            )
+            raise RequiredArgument(f"method is required for event {event.name}")
 
         if condition not in (
             AlertCondition.ALWAYS,
@@ -83,30 +79,24 @@ def _check_event(
             AlertCondition.SEVERITY_CHANGED,
         ):
             raise InvalidArgument(
-                "Invalid condition {} for event {}".format(
-                    condition.name, event.name
-                )
+                f"Invalid condition {condition.name} for event {event.name}"
             )
+
     elif event in (
         AlertEvent.NEW_SECINFO_ARRIVED,
         AlertEvent.UPDATED_SECINFO_ARRIVED,
     ):
         if not condition:
-            raise RequiredArgument(
-                "condition is required for event {}".format(event.name)
-            )
+            raise RequiredArgument(f"condition is required for event {event.name}")
 
         if not method:
-            raise RequiredArgument(
-                "method is required for event {}".format(event.name)
-            )
+            raise RequiredArgument(f"method is required for event {event.name}")
 
         if condition != AlertCondition.ALWAYS:
             raise InvalidArgument(
-                "Invalid condition {} for event {}".format(
-                    condition.name, event.name
-                )
+                f"Invalid condition {condition.name} for event {event.name}"
             )
+
         if method not in (
             AlertMethod.SCP,
             AlertMethod.SEND,
@@ -115,39 +105,30 @@ def _check_event(
             AlertMethod.SYSLOG,
             AlertMethod.EMAIL,
         ):
-            raise InvalidArgument(
-                "Invalid method {} for event {}".format(method.name, event.name)
-            )
+            raise InvalidArgument(f"Invalid method {method.name} for event {event.name}")
     elif event in (
         AlertEvent.TICKET_RECEIVED,
         AlertEvent.OWNED_TICKET_CHANGED,
         AlertEvent.ASSIGNED_TICKET_CHANGED,
     ):
         if not condition:
-            raise RequiredArgument(
-                "condition is required for event {}".format(event.name)
-            )
+            raise RequiredArgument(f"condition is required for event {event.name}")
 
         if not method:
-            raise RequiredArgument(
-                "method is required for event {}".format(event.name)
-            )
+            raise RequiredArgument(f"method is required for event {event.name}")
         if condition != AlertCondition.ALWAYS:
             raise InvalidArgument(
-                "Invalid condition {} for event {}".format(
-                    condition.name, event.name
-                )
+                f"Invalid condition {condition.name} for event {event.name}"
             )
+
         if method not in (
             AlertMethod.EMAIL,
             AlertMethod.START_TASK,
             AlertMethod.SYSLOG,
         ):
-            raise InvalidArgument(
-                "Invalid method {} for event {}".format(method.name, event.name)
-            )
+            raise InvalidArgument(f"Invalid method {method.name} for event {event.name}")
     elif event is not None:
-        raise InvalidArgument('Invalid event "{}"'.format(event.name))
+        raise InvalidArgument(f'Invalid event "{event.name}"')
 
 
 class GmpV208Mixin(GvmProtocol):
@@ -497,13 +478,7 @@ class GmpV208Mixin(GvmProtocol):
         if comment:
             cmd.add_element("comment", comment)
 
-        if resource_id or resource_type:
-            if not resource_id:
-                raise RequiredArgument(
-                    function=self.create_permission.__name__,
-                    argument='resource_id',
-                )
-
+        if resource_id:
             if not resource_type:
                 raise RequiredArgument(
                     function=self.create_permission.__name__,
@@ -528,6 +503,12 @@ class GmpV208Mixin(GvmProtocol):
                 _actual_resource_type = EntityType.SCAN_CONFIG
 
             _xmlresource.add_element("type", _actual_resource_type.value)
+
+        elif resource_type:
+            raise RequiredArgument(
+                function=self.create_permission.__name__,
+                argument='resource_id',
+            )
 
         return self._send_xml_command(cmd)
 
@@ -621,9 +602,9 @@ class GmpV208Mixin(GvmProtocol):
             )
 
         _actual_resource_type = resource_type
-        if resource_type.value == EntityType.AUDIT.value:
+        if _actual_resource_type.value == EntityType.AUDIT.value:
             _actual_resource_type = EntityType.TASK
-        elif resource_type.value == EntityType.POLICY.value:
+        elif _actual_resource_type.value == EntityType.POLICY.value:
             _actual_resource_type = EntityType.SCAN_CONFIG
         _xmlresources.add_element("type", _actual_resource_type.value)
 
@@ -740,15 +721,15 @@ class GmpV208Mixin(GvmProtocol):
         cmd = XmlCommand('get_aggregates')
 
         _actual_resource_type = resource_type
-        if resource_type.value == EntityType.AUDIT.value:
+        if _actual_resource_type.value == EntityType.AUDIT.value:
             _actual_resource_type = EntityType.TASK
             cmd.set_attribute('usage_type', 'audit')
-        elif resource_type.value == EntityType.POLICY.value:
+        elif _actual_resource_type.value == EntityType.POLICY.value:
             _actual_resource_type = EntityType.SCAN_CONFIG
             cmd.set_attribute('usage_type', 'policy')
-        elif resource_type.value == EntityType.SCAN_CONFIG.value:
+        elif _actual_resource_type.value == EntityType.SCAN_CONFIG.value:
             cmd.set_attribute('usage_type', 'scan')
-        elif resource_type.value == EntityType.TASK.value:
+        elif _actual_resource_type.value == EntityType.TASK.value:
             cmd.set_attribute('usage_type', 'scan')
         cmd.set_attribute('type', _actual_resource_type.value)
 
@@ -820,13 +801,11 @@ class GmpV208Mixin(GvmProtocol):
         if subgroup_column is not None:
             if not group_column:
                 raise RequiredArgument(
-                    '{} requires a group_column argument'
-                    ' if subgroup_column is given'.format(
-                        self.get_aggregates.__name__
-                    ),
+                    f'{self.get_aggregates.__name__} requires a group_column argument if subgroup_column is given',
                     function=self.get_aggregates.__name__,
                     argument='subgroup_column',
                 )
+
             cmd.set_attribute('subgroup_column', subgroup_column)
 
         if text_columns is not None:
@@ -956,7 +935,7 @@ class GmpV208Mixin(GvmProtocol):
             )
 
         cmd = XmlCommand("modify_alert")
-        cmd.set_attribute("alert_id", str(alert_id))
+        cmd.set_attribute("alert_id", alert_id)
 
         if name:
             cmd.add_element("name", name)
@@ -1111,13 +1090,7 @@ class GmpV208Mixin(GvmProtocol):
         if name:
             cmd.add_element("name", name)
 
-        if resource_id or resource_type:
-            if not resource_id:
-                raise RequiredArgument(
-                    function=self.modify_permission.__name__,
-                    argument='resource_id',
-                )
-
+        if resource_id:
             if not resource_type:
                 raise RequiredArgument(
                     function=self.modify_permission.__name__,
@@ -1141,13 +1114,13 @@ class GmpV208Mixin(GvmProtocol):
                 _actual_resource_type = EntityType.SCAN_CONFIG
             _xmlresource.add_element("type", _actual_resource_type.value)
 
-        if subject_id or subject_type:
-            if not subject_id:
-                raise RequiredArgument(
-                    function=self.modify_permission.__name__,
-                    argument='subject_id',
-                )
+        elif resource_type:
+            raise RequiredArgument(
+                function=self.modify_permission.__name__,
+                argument='resource_id',
+            )
 
+        if subject_id:
             if not isinstance(subject_type, PermissionSubjectType):
                 raise InvalidArgumentType(
                     function=self.modify_permission.__name__,
@@ -1157,6 +1130,12 @@ class GmpV208Mixin(GvmProtocol):
 
             _xmlsubject = cmd.add_element("subject", attrs={"id": subject_id})
             _xmlsubject.add_element("type", subject_type.value)
+
+        elif subject_type:
+            raise RequiredArgument(
+                function=self.modify_permission.__name__,
+                argument='subject_id',
+            )
 
         return self._send_xml_command(cmd)
 
@@ -1298,7 +1277,7 @@ class GmpV208Mixin(GvmProtocol):
             )
 
         cmd = XmlCommand("modify_tag")
-        cmd.set_attribute("tag_id", str(tag_id))
+        cmd.set_attribute("tag_id", tag_id)
 
         if comment:
             cmd.add_element("comment", comment)
@@ -1338,9 +1317,9 @@ class GmpV208Mixin(GvmProtocol):
                         arg_type=EntityType.__name__,
                     )
                 _actual_resource_type = resource_type
-                if resource_type.value == EntityType.AUDIT.value:
+                if _actual_resource_type.value == EntityType.AUDIT.value:
                     _actual_resource_type = EntityType.TASK
-                elif resource_type.value == EntityType.POLICY.value:
+                elif _actual_resource_type.value == EntityType.POLICY.value:
                     _actual_resource_type = EntityType.SCAN_CONFIG
                 _xmlresources.add_element("type", _actual_resource_type.value)
 
@@ -1372,7 +1351,7 @@ class GmpV208Mixin(GvmProtocol):
             )
 
         cmd = XmlCommand("modify_tls_certificate")
-        cmd.set_attribute("tls_certificate_id", str(tls_certificate_id))
+        cmd.set_attribute("tls_certificate_id", tls_certificate_id)
 
         if comment:
             cmd.add_element("comment", comment)
@@ -1788,10 +1767,9 @@ class GmpV208Mixin(GvmProtocol):
         if alert_ids:
             if isinstance(alert_ids, str):
                 deprecation(
-                    "Please pass a list as alert_ids parameter to {}. "
-                    "Passing a string is deprecated and will be removed in "
-                    "future.".format(function)
+                    f"Please pass a list as alert_ids parameter to {function}. Passing a string is deprecated and will be removed in future."
                 )
+
 
                 # if a single id is given as a string wrap it into a list
                 alert_ids = [alert_ids]
@@ -2082,8 +2060,9 @@ class GmpV208Mixin(GvmProtocol):
             cmd.append_xml_str(report)
         except etree.XMLSyntaxError as e:
             raise InvalidArgument(
-                "Invalid xml passed as report to import_report {}".format(e)
+                f"Invalid xml passed as report to import_report {e}"
             ) from None
+
 
         return self._send_xml_command(cmd)
 
@@ -2478,10 +2457,10 @@ class GmpV208Mixin(GvmProtocol):
         if allow_insecure is not None:
             cmd.add_element("allow_insecure", to_bool(allow_insecure))
 
-        if (
-            credential_type == CredentialType.CLIENT_CERTIFICATE
-            or credential_type == CredentialType.SMIME_CERTIFICATE
-        ):
+        if credential_type in [
+            CredentialType.CLIENT_CERTIFICATE,
+            CredentialType.SMIME_CERTIFICATE,
+        ]:
             if not certificate:
                 raise RequiredArgument(
                     function=self.create_credential.__name__,
@@ -2490,11 +2469,11 @@ class GmpV208Mixin(GvmProtocol):
 
             cmd.add_element("certificate", certificate)
 
-        if (
-            credential_type == CredentialType.USERNAME_PASSWORD
-            or credential_type == CredentialType.USERNAME_SSH_KEY
-            or credential_type == CredentialType.SNMP
-        ):
+        if credential_type in [
+            CredentialType.USERNAME_PASSWORD,
+            CredentialType.USERNAME_SSH_KEY,
+            CredentialType.SNMP,
+        ]:
             if not login:
                 raise RequiredArgument(
                     function=self.create_credential.__name__, argument='login'
@@ -2508,10 +2487,14 @@ class GmpV208Mixin(GvmProtocol):
             )
 
         if (
-            credential_type == CredentialType.USERNAME_PASSWORD
-            or credential_type == CredentialType.SNMP
-            or credential_type == CredentialType.PASSWORD_ONLY
-        ) and password:
+            credential_type
+            in [
+                CredentialType.USERNAME_PASSWORD,
+                CredentialType.SNMP,
+                CredentialType.PASSWORD_ONLY,
+            ]
+            and password
+        ):
             cmd.add_element("password", password)
 
         if credential_type == CredentialType.USERNAME_SSH_KEY:
@@ -2547,22 +2530,22 @@ class GmpV208Mixin(GvmProtocol):
             if privacy_algorithm is not None or privacy_password:
                 _xmlprivacy = cmd.add_element("privacy")
 
-                if privacy_algorithm is not None:
-                    if not isinstance(
-                        privacy_algorithm, self.types.SnmpPrivacyAlgorithm
-                    ):
-                        raise InvalidArgumentType(
-                            function=self.create_credential.__name__,
-                            argument='privacy_algorithm',
-                            arg_type=SnmpPrivacyAlgorithm.__name__,
-                        )
-
-                    _xmlprivacy.add_element(
-                        "algorithm", privacy_algorithm.value
+            if privacy_algorithm is not None:
+                if not isinstance(
+                    privacy_algorithm, self.types.SnmpPrivacyAlgorithm
+                ):
+                    raise InvalidArgumentType(
+                        function=self.create_credential.__name__,
+                        argument='privacy_algorithm',
+                        arg_type=SnmpPrivacyAlgorithm.__name__,
                     )
 
-                if privacy_password:
-                    _xmlprivacy.add_element("password", privacy_password)
+                _xmlprivacy.add_element(
+                    "algorithm", privacy_algorithm.value
+                )
+
+            if privacy_password:
+                _xmlprivacy.add_element("password", privacy_password)
 
         if credential_type == CredentialType.PGP_ENCRYPTION_KEY:
             if not public_key:
@@ -2640,9 +2623,7 @@ class GmpV208Mixin(GvmProtocol):
             _xmlkey = cmd.add_element("key")
             _xmlkey.add_element("phrase", key_phrase)
             _xmlkey.add_element("private", private_key)
-        elif (not key_phrase and private_key) or (
-            key_phrase and not private_key
-        ):
+        elif not key_phrase and private_key or key_phrase:
             raise RequiredArgument(
                 function=self.modify_credential.__name__,
                 argument='key_phrase and private_key',
@@ -2669,20 +2650,20 @@ class GmpV208Mixin(GvmProtocol):
         if privacy_algorithm is not None or privacy_password is not None:
             _xmlprivacy = cmd.add_element("privacy")
 
-            if privacy_algorithm is not None:
-                if not isinstance(
-                    privacy_algorithm, self.types.SnmpPrivacyAlgorithm
-                ):
-                    raise InvalidArgumentType(
-                        function=self.modify_credential.__name__,
-                        argument='privacy_algorithm',
-                        arg_type=SnmpPrivacyAlgorithm.__name__,
-                    )
+        if privacy_algorithm is not None:
+            if not isinstance(
+                privacy_algorithm, self.types.SnmpPrivacyAlgorithm
+            ):
+                raise InvalidArgumentType(
+                    function=self.modify_credential.__name__,
+                    argument='privacy_algorithm',
+                    arg_type=SnmpPrivacyAlgorithm.__name__,
+                )
 
-                _xmlprivacy.add_element("algorithm", privacy_algorithm.value)
+            _xmlprivacy.add_element("algorithm", privacy_algorithm.value)
 
-            if privacy_password is not None:
-                _xmlprivacy.add_element("password", privacy_password)
+        if privacy_password is not None:
+            _xmlprivacy.add_element("password", privacy_password)
 
         if public_key:
             _xmlkey = cmd.add_element("key")

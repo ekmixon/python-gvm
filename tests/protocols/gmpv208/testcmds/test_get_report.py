@@ -59,9 +59,7 @@ class GmpGetReportTestCase:
         report_format_id = get_report_format_id_from_string('txt').value
 
         self.connection.send.has_been_called_with(
-            '<get_reports report_id="r1" format_id="{}" details="1"/>'.format(
-                report_format_id
-            )
+            f'<get_reports report_id="r1" format_id="{report_format_id}" details="1"/>'
         )
 
     def test_get_report_with_delta_report_id(self):

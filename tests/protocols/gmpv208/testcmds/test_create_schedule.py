@@ -78,11 +78,7 @@ class GmpCreateScheduleTestCase:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_schedule>"
-            "<name>foo</name>"
-            "<icalendar>{}</icalendar>"
-            "<timezone>Europe/Berlin</timezone>"
-            "</create_schedule>".format(ICAL)
+            f"<create_schedule><name>foo</name><icalendar>{ICAL}</icalendar><timezone>Europe/Berlin</timezone></create_schedule>"
         )
 
     def test_create_schedule_with_comment(self):
@@ -91,10 +87,5 @@ class GmpCreateScheduleTestCase:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_schedule>"
-            "<name>foo</name>"
-            "<icalendar>{}</icalendar>"
-            "<timezone>Europe/Berlin</timezone>"
-            "<comment>bar</comment>"
-            "</create_schedule>".format(ICAL)
+            f"<create_schedule><name>foo</name><icalendar>{ICAL}</icalendar><timezone>Europe/Berlin</timezone><comment>bar</comment></create_schedule>"
         )

@@ -35,12 +35,10 @@ class OSPStartScanTestCase(unittest.TestCase):
         scanner_params = OrderedDict()
         scanner_params['key1'] = 'value1'
 
-        targets = list()
         _target1 = OrderedDict()
         _target1['hosts'] = 'localhost'
         _target1['ports'] = '22,80'
-        targets.append(_target1)
-
+        targets = [_target1]
         _target2 = OrderedDict()
         _target2['hosts'] = '192.168.10.1'
         _target2['ports'] = '443'

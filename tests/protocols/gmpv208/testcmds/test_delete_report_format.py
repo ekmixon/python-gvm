@@ -50,6 +50,5 @@ class GmpDeleteReportFormatTestCase:
 
         report_format_id = get_report_format_id_from_string('svg').value
         self.connection.send.has_been_called_with(
-            '<delete_report_format '
-            'report_format_id="{}" ultimate="0"/>'.format(report_format_id)
+            f'<delete_report_format report_format_id="{report_format_id}" ultimate="0"/>'
         )

@@ -48,13 +48,12 @@ class GmpGetReportFormatTestCase:
         self.gmp.get_report_format(ReportFormatType.PDF)
         report_format_id = get_report_format_id_from_string('pdf').value
         self.connection.send.has_been_called_with(
-            '<get_report_formats '
-            'report_format_id="{}" details="1"/>'.format(report_format_id)
+            f'<get_report_formats report_format_id="{report_format_id}" details="1"/>'
         )
+
 
         self.gmp.get_report_format(report_format_id=ReportFormatType.PDF)
 
         self.connection.send.has_been_called_with(
-            '<get_report_formats '
-            'report_format_id="{}" details="1"/>'.format(report_format_id)
+            f'<get_report_formats report_format_id="{report_format_id}" details="1"/>'
         )

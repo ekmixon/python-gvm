@@ -140,11 +140,10 @@ class TaskMixin:
                 )
             cmd.add_element("hosts_ordering", hosts_ordering.value)
 
-        if alert_ids:
-            if is_list_like(alert_ids):
-                # parse all given alert id's
-                for alert in alert_ids:
-                    cmd.add_element("alert", attrs={"id": str(alert)})
+        if alert_ids and is_list_like(alert_ids):
+            # parse all given alert id's
+            for alert in alert_ids:
+                cmd.add_element("alert", attrs={"id": str(alert)})
 
         if schedule_id:
             cmd.add_element("schedule", attrs={"id": schedule_id})

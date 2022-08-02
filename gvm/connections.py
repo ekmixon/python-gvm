@@ -204,13 +204,11 @@ class SSHConnection(GvmConnection):
 
     def _send_all(self, data):
         while data:
-            sent = self._stdin.channel.send(data)
-
-            if not sent:
+            if sent := self._stdin.channel.send(data):
+                data = data[sent:]
+            else:
                 # Connection was closed by server
                 raise GvmError("Remote closed the connection")
-
-            data = data[sent:]
 
     def connect(self):
         """
@@ -367,9 +365,7 @@ class UnixSocketConnection(GvmConnection):
                 "Socket {path} does not exist".format(path=self.path)
             ) from None
         except ConnectionError:
-            raise GvmError(
-                "Could not connect to socket {}".format(self.path)
-            ) from None
+            raise GvmError(f"Could not connect to socket {self.path}") from None
 
 
 class DebugConnection:

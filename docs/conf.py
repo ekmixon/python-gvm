@@ -127,7 +127,7 @@ html_show_sourcelink = False
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = project + '-doc'
+htmlhelp_basename = f'{project}-doc'
 
 
 # -- Options for LaTeX output ------------------------------------------------
@@ -153,19 +153,20 @@ latex_elements = {
 latex_documents = [
     (
         master_doc,
-        project + '.tex',
-        project + ' Documentation',
+        f'{project}.tex',
+        f'{project} Documentation',
         'Greenbone Networks GmbH',
         'manual',
     )
 ]
 
 
+
 # -- Options for manual page output ------------------------------------------
 
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
-man_pages = [(master_doc, project, project + ' Documentation', [author], 1)]
+man_pages = [(master_doc, project, f'{project} Documentation', [author], 1)]
 
 
 # -- Options for Texinfo output ----------------------------------------------
@@ -177,13 +178,14 @@ texinfo_documents = [
     (
         master_doc,
         project,
-        project + ' Documentation',
+        f'{project} Documentation',
         author,
         project,
         'One line description of project.',
         'Miscellaneous',
     )
 ]
+
 
 
 # -- Options for Epub output -------------------------------------------------
